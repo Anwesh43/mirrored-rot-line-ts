@@ -204,3 +204,25 @@ class MirrorRotLine {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    animator : Animator = new Animator()
+    mrl : MirrorRotLine = new MirrorRotLine()
+
+    draw(context : CanvasRenderingContext2D) {
+        this.mrl.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.mrl.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.mrl.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
